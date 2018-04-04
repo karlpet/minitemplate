@@ -1,12 +1,15 @@
 {
-  "name": "Mini Template",
+  "name": "minitemplate",
   "version": "1.0.0",
   "description": "Minimal templating engine for both node and browser.",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "keywords": ["templating", "minimal"],
+  "keywords": [
+    "templating",
+    "minimal"
+  ],
   "author": "karlpet",
   "license": "MIT",
   "devDependencies": {

@@ -1,36 +1,36 @@
-const compile = require('./templater.js')
+const templater = require('./minitemplate.js')
 
-describe('compile', () => {
+describe('templater', () => {
 
-  it('compile fails if not string', () => {
-    expect(() => {compile(2)}).toThrowError(TypeError)
-    expect(() => {compile({})}).toThrowError(TypeError)
-    expect(() => {compile(() => {})}).toThrowError(TypeError)
+  it('templater fails if not string', () => {
+    expect(() => {templater(2)}).toThrowError(TypeError)
+    expect(() => {templater({})}).toThrowError(TypeError)
+    expect(() => {templater(() => {})}).toThrowError(TypeError)
   })
 
-  it('compiles empty string', () => {
+  it('templater compiles empty string', () => {
 
-    let strTemplate = compile('')
+    let strTemplate = templater('')
     let str = strTemplate();
     expect(str).toBe('')
   })
 
-  it('compiles string with no variables', () => {
+  it('templater compiles string with no variables', () => {
 
-    let strTemplate = compile('<div>Hello</div>');
+    let strTemplate = templater('<div>Hello</div>');
     let str = strTemplate();
     expect(str).toBe('<div>Hello</div>')
   })
 
-  it('compiles string with variables', () => {
+  it('templater compiles string with variables', () => {
 
-    let strTemplate = compile('<h1>{{name}}</h1>')
+    let strTemplate = templater('<h1>{{name}}</h1>')
     let str = strTemplate({ name: 'karlpet' })
     expect(str).toBe('<h1>karlpet</h1>')
   })
 
-  it('compiles string with many variables', () => {
-    let strTemplate = compile('<p>Hello {{person}}! There are {{number}} tests written for {{project}}.</p>')
+  it('templater compiles string with many variables', () => {
+    let strTemplate = templater('<p>Hello {{person}}! There are {{number}} tests written for {{project}}.</p>')
     let str = strTemplate({ person: 'testman', number: 5, project: 'compile' })
 
     expect(str).toBe('<p>Hello testman! There are 5 tests written for compile.</p>')
@@ -39,8 +39,8 @@ describe('compile', () => {
     expect(str).toBe('<p>Hello testman2! There are 1337 tests written for templater.</p>')
   })
 
-  it('compile fails if templating data is not object', () => {
-    let strTemplate = compile('<p>Hello testman!</p>')
+  it('templating fails if templating data is not object', () => {
+    let strTemplate = templater('<p>Hello testman!</p>')
 
     expect(() => { strTemplate('string') }).toThrowError(TypeError)
     expect(() => { strTemplate(2324) }).toThrowError(TypeError)
