@@ -1,11 +1,19 @@
 const mt = require('./minitemplate.js')
 
-module.exports = {
-  compile: mt.compiler(mt.templater, mt.mustacheTemplate),
-  plugin: (template) => {
+module.exports = (() => {
+  let state = {}
+
+  state.compile = mt.compiler(mt.templater, mt.mustacheTemplate) 
+  
+  state.plugin = (template) => {
     if (typeof template !== 'function') {
       throw new TypeError('Error: template has to be a function that returns a string.')
     }
-    return mt.compiler(mt.templater,template)
+    state.compile = mt.compiler(mt.templater, template)
   }
-}
+
+  state.reset = () => {
+    state.compile = mt.compiler(mt.templater, mt.mustacheTemplate)
+  }
+  return state;
+})()

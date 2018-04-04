@@ -23,14 +23,17 @@ You can also easily plugin your own templating functions, like this:
 const Templater = require('./minitemplate-factory.js');
 
 const newTemplate = (key) => '<<'+key+'>>'
-const newCompiler = Templater.plugin(newTemplate)
+Templater.plugin(newTemplate)
 
 const string = '<p><<name>> is <<adjective>>!</p>'
-const stringTemplate = newCompiler(string)
+const stringTemplate = Templater.compile(string)
 
 const templatedString = stringTemplate({ name: 'node', adjective: 'nice' })
 
 // templatedString === '<p>node is nice!</p>'
+
+Templater.reset() // Now the template is back to normal {{key}}, AKA 'mustache template'.
+
 ```
 
 Uses no dependencies apart from jest for testing.

@@ -51,9 +51,6 @@ describe('Templater.compile', () => {
 
 describe('Templater.plugin', () => {
 
-  const mockTemplate = (key) => '<<'+key+'>>'
-  const newCompile = Templater.plugin(mockTemplate)
-
   it('Fails if template is not a function', () => {
     expect(() => { Templater.plugin(4) }).toThrowError(TypeError)
     expect(() => { Templater.plugin('') }).toThrowError(TypeError)
@@ -61,10 +58,33 @@ describe('Templater.plugin', () => {
   })
 
   it('compiles and templates a string with many variables', () => {
-    let strTemplate = newCompile('<h1><<greeting>>, <<name>>!</h1>')
+    const mockTemplate = (key) => '<<'+key+'>>'
+    Templater.plugin(mockTemplate)
+
+    let strTemplate = Templater.compile('<h1><<greeting>>, <<name>>!</h1>')
     let str = strTemplate({ greeting: 'Hello', name: 'testman' })
 
     expect(str).toBe('<h1>Hello, testman!</h1>')
   })
 
+})
+
+describe('Templater.reset', () => {
+
+  it('Compiles with normal mustache template after reset', () => {
+    const mockTemplate = (key) => '<<'+key+'>>'
+    Templater.plugin(mockTemplate)
+
+    let strTemplate = Templater.compile('<h1><<greeting>>, <<name>>!</h1>')
+    let str = strTemplate({ greeting: 'Hello', name: 'testman' })
+
+    expect(str).toBe('<h1>Hello, testman!</h1>')
+
+    Templater.reset()
+
+    strTemplate = Templater.compile('<h1>{{greeting}}, {{name}}!</h1>')
+    str = strTemplate({ greeting: 'Hello', name: 'testman' })
+
+    expect(str).toBe('<h1>Hello, testman!</h1>')
+  })
 })
